@@ -1,5 +1,6 @@
 package ie.atu.sw;
 
+import java.util.List;
 import java.util.Map;
 
 public class Runner {
@@ -44,6 +45,19 @@ public class Runner {
 			if (++count == 10) {
 				break;
 			}
+		}
+		
+		// Snippet here to test the File Manager class
+		FileManager fm = new FileManager();
+		System.out.println("\n[ TEST ] Reading Poblacht file ");
+		
+		List<String> lines = fm.readTextFile("./PoblachtNaHEireannPearse.txt");
+		
+		System.out.println("Lines being read: " + lines.size());
+		System.out.println("First few lines to b checked");
+		
+		for(int i = 0; i < Math.min(3, lines.size()); i++) {
+			System.out.println(lines.get(i));
 		}
 		
 		
