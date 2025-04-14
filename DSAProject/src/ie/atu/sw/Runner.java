@@ -61,7 +61,29 @@ public class Runner {
 		}
 		
 		
-		//You may want to include a progress meter in you assignment!
+		//Snippet to test the Encoder class
+		System.out.println(ConsoleColour.CYAN_BOLD);
+		System.out.println("\n[ TEST ] Encoding first couple of from text file \n");
+		
+		
+		mapper.load("./encodings-10000.csv");
+		
+		Encoder encoder = new Encoder(mapper.getEncodingMap());
+		
+		// Just test with 3 for now
+		for (int i = 0; i < Math.min(3, lines.size()); i++) {
+			
+			String line = lines.get(i);
+			System.out.println("Unchanged: " + line);
+			
+			List<Integer> codes = encoder.encodeLine(line);
+			
+			System.out.println("Encoded: " + codes);
+			System.out.println();
+			
+		}
+		
+		//Progress meter
 		System.out.print(ConsoleColour.YELLOW);	//Change the colour of the console text
 		int size = 100;							//The size of the meter. 100 equates to 100%
 		for (int i =0 ; i < size ; i++) {		//The loop equates to a sequence of processing steps
