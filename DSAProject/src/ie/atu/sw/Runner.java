@@ -1,5 +1,7 @@
 package ie.atu.sw;
 
+import java.util.Map;
+
 public class Runner {
 
 	public static void main(String[] args) throws Exception {
@@ -24,6 +26,25 @@ public class Runner {
 		System.out.print(ConsoleColour.BLACK_BOLD_BRIGHT);
 		System.out.print("Select Option [1-?]>");
 		System.out.println();
+		
+		// Snippet here to test the encoding map in mapper and test it
+		System.out.println(ConsoleColour.GREEN_BOLD);
+		System.out.println("\n[ TEST ] Loading Poblacht Na hEireann Pearse...\n");
+		
+		Mapper mapper = new Mapper();
+		mapper.load("./encodings-10000.csv"); // file is in root  project Directory
+		
+		Map<String, Integer> encodingMap = mapper.getEncodingMap();
+		System.out.println("Loaded " + encodingMap.size() + " entries.");
+		
+		System.out.println("Just show first 10 entries to start:");
+		int count = 0;
+		for (Map.Entry<String, Integer> entry : encodingMap.entrySet()) {
+			System.out.println(entry.getKey() + " => " + entry.getValue());
+			if (++count == 10) {
+				break;
+			}
+		}
 		
 		
 		//You may want to include a progress meter in you assignment!
