@@ -25,18 +25,18 @@ public class Encoder {
 		List<Integer> codes = new ArrayList<>();
 		
 		
-		// This will lowercase the word then split the line of text into individual words using 
+		// This will lower case the word then split the line of text into individual words using 
 		String[] words = line.toLowerCase().split("\\s+");
 		
 		for (String word: words) {
 			// Match any character not in a-z or then replace with empty string. 
-			word = word.replaceAll("[^a-z]"," ");
+			word = word.replaceAll("[^a-z@]"," ");
 		
 		
 			if (encodingMap.containsKey(word)) {
 				codes.add(encodingMap.get(word));
 			} else {
-				// if the word is not in the map then we need it to just have a 0.
+				// if the word is not in the map then we need it to just have a 0
 				codes.add(0);
 			}
 		

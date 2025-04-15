@@ -83,6 +83,29 @@ public class Runner {
 			
 		}
 		
+		
+		// Test the decoder class
+		System.out.println(ConsoleColour.BLUE_BOLD);
+		System.out.println("\n [ TEST ] Decoding encoded lines");
+		
+		// load decoder map
+		Decoder decoder = new Decoder(mapper.getDecodingMap());
+		
+		//Encode and decode same line
+		for (int i = 0; i < Math.min(3, lines.size()); i++) {
+			
+			String line = lines.get(i);
+			List<Integer> codes = encoder.encodeLine(line);
+			
+			//Decode the list of nummber back to words
+			String decodedLine = decoder.decodeLine(codes);
+			
+			System.out.println("Encoded: " + codes);
+			System.out.println("Decoded: " + decodedLine);
+			System.out.println();
+			
+		}
+		
 		//Progress meter
 		System.out.print(ConsoleColour.YELLOW);	//Change the colour of the console text
 		int size = 100;							//The size of the meter. 100 equates to 100%
