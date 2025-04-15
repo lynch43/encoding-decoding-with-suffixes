@@ -43,5 +43,27 @@ public class Encoder {
 		}
 		return codes; // Return the final list of encoded numbers
 	}
+	
+	
+	public List<String> encodeFile(List<String> lines) {
+		List<String> output = new ArrayList<>();
+		
+		for (String line : lines) {
+			
+			List<Integer> codes = encodeLine(line);
+			
+			// Join codes into a string with some whitespaces
+			String encodedLine = codes.toString()
+									  .replaceAll("[\\[\\],]", "") // trying to remove brackets
+									  .trim();
+			output.add(encodedLine);
+			
+		}
+		
+		return output;
+		
+	}
+	
+	
 
 }

@@ -85,7 +85,7 @@ public class Runner {
 		
 		
 		// Test the decoder class
-		System.out.println(ConsoleColour.BLUE_BOLD);
+		System.out.println(ConsoleColour.CYAN_BOLD);
 		System.out.println("\n [ TEST ] Decoding encoded lines");
 		
 		// load decoder map
@@ -106,6 +106,25 @@ public class Runner {
 			
 		}
 		
+		//////////////////////////////////////////
+		//////////////////////////////////////////
+		// Encode the full file and write to output
+		
+		//Read the encoded file, decode, and write to output
+		List<String> encodedLines = encoder.encodeFile(lines);
+		fm.writeTextFile("./encoded.txt", encodedLines); //CALLING TO MAKE FILE
+		System.out.println(ConsoleColour.GREEN + "\nEncoded file written the encoded.txt");
+		
+		
+		
+		// Read the encoded file, decode, and write to output
+		List<String> readEncodedLines = fm.readTextFile("./encoded.txt");
+		List<String> decodedLines = decoder.decodeFile(readEncodedLines);
+		fm.writeTextFile("./decoded.txt", decodedLines); // CALLING TO MAKE THE FILE
+		System.out.println(ConsoleColour.GREEN + "\nEncoded file written the encoded.txt");
+		
+		
+		
 		//Progress meter
 		System.out.print(ConsoleColour.YELLOW);	//Change the colour of the console text
 		int size = 100;							//The size of the meter. 100 equates to 100%
@@ -113,6 +132,8 @@ public class Runner {
 			printProgress(i + 1, size); 		//After each (some) steps, update the progress meter
 			Thread.sleep(10);					//Slows things down so the animation is visible 
 		}
+		
+		
 		
 	}
 	

@@ -32,5 +32,29 @@ public class Decoder {
 		
 		return result.toString().trim();
 	}
+	
+	public List<String> decodeFile(List<String> encodedLines) {
+		List<String> output = new java.util.ArrayList<>();
+		
+		for (String line : encodedLines) {
+			String[] parts = line.trim().split("\\s+");
+			List<Integer> codes = new java.util.ArrayList<>();
+			
+			for(String part : parts) {
+				try {
+					codes.add(Integer.parseInt(part));
+				} catch (NumberFormatException e) {
+					codes.add(0);
+				}
+			}
+			
+			// Decode it then and add to output happy days
+			output.add(decodeLine(codes));
+			
+		}
+		
+		return output;
+			
+	}
 
 }
