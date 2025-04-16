@@ -7,20 +7,18 @@ import java.util.Scanner;
 public class Runner {
 
 	public static void main(String[] args) throws Exception {
-		
 		// Scanner for the menu inputs
 		Scanner scanner = new Scanner(System.in);
 		// Default values
 		String mappingFile = "./encodings-10000.csv";
 		String inputFile = "";
 		String outputFile = "./out.txt";
-		String mode = "encode"; // or boolean??? if it gets more complicated
-		
+		String mode = "encode";
+
 		// Main Loop
-		
 		// Program on or off
 		boolean running = true;
-		
+
 		while (running) {
 			System.out.println(ConsoleColour.WHITE);
 			System.out.println("************************************************************");
@@ -34,212 +32,84 @@ public class Runner {
 			System.out.println("(3) Specify Output File (default: ./out.txt)");
 			System.out.println("(4) Configure Options");
 			System.out.println("(5) Encode || Decode");
-			System.out.println("(6) Run");
-			System.out.println("(?) Exit()");
-			
-			
-			
-			System.out.println(ConsoleColour.BLACK_BOLD_BRIGHT + "Select Option [1-6]: ");
+			System.out.println("(6) Exit");
+
+			System.out.print(ConsoleColour.BLACK_BOLD_BRIGHT + "Select Option [1-6]: ");
+			System.out.flush(); // Ensure prompt appears in Eclipse console
 			String choice = scanner.nextLine();
-			
+
 			switch (choice) {
 				case "1":
-				System.out.println("Enter mapping file path: ");
-				mappingFile = scanner.nextLine();
-				break;
-				
+					System.out.print("Enter mapping file path: ");
+					System.out.flush();
+					mappingFile = scanner.nextLine();
+					break;
+
 				case "2":
-					System.out.println("Enter input text file path: ");
+					System.out.print("Enter input text file path: ");
+					System.out.flush();
 					inputFile = scanner.nextLine();
 					break;
+
 				case "3":
-					System.out.println("Enter output file path:");
-					outputFile =  scanner.nextLine();
+					System.out.print("Enter output file path: ");
+					System.out.flush();
+					outputFile = scanner.nextLine();
 					break;
+
 				case "4":
-					System.out.println("Choose mode (encode/decode): ");
+					System.out.print("Choose mode (encode/decode): ");
+					System.out.flush();
 					mode = scanner.nextLine().trim().toLowerCase();
 					break;
+
 				case "5":
-					
-					// Do the actual encode or decode
-					
 					try {
 						Mapper mapper = new Mapper();
 						mapper.load(mappingFile);
 						FileManager fm = new FileManager();
-						
+
 						if (mode.equals("encode")) {
 							List<String> inputLines = fm.readTextFile(inputFile);
 							Encoder encoder = new Encoder(mapper.getEncodingMap());
 							List<String> encodedLines = encoder.encodeFile(inputLines);
 							fm.writeTextFile(outputFile, encodedLines);
-							System.out.println(ConsoleColour.GREEN + "[SUCCESS] file encoding there");
-						}
-						else if(mode.equals("decode")) {
+							System.out.println(ConsoleColour.GREEN + "[SUCCESS] File encoded to: " + outputFile);
+						} else if (mode.equals("decode")) {
 							List<String> encodedLines = fm.readTextFile(inputFile);
 							Decoder decoder = new Decoder(mapper.getDecodingMap());
 							List<String> decodedLines = decoder.decodeFile(encodedLines);
 							fm.writeTextFile(outputFile, decodedLines);
-							System.out.println(ConsoleColour.GREEN + "[SUCCESS] file decoded in " + outputFile);
+							System.out.println(ConsoleColour.GREEN + "[SUCCESS] File decoded to: " + outputFile);
 						} else {
-							System.out.println(ConsoleColour.RED + "[ERROR] Invalid mode for program");
+							System.out.println(ConsoleColour.RED + "[ERROR] You must choose to Encode or Decode");
 						}
 					} catch (Exception e) {
-						System.out.println(ConsoleColour.RED + "[ ERROR ] Something has failed" + e.getMessage());
+						System.out.println(ConsoleColour.RED + "[ ERROR ] Something has failed: " + e.getMessage());
 					}
-					
 					break;
+
 				case "6":
 					running = false;
+					System.out.println("Exiting Program.");
 					break;
-					
-				default:
-					System.out.println("INVALID, try aggain");
-			
-			}
-			
-			System.out.println("\n\n\n"); // make some space
-//		}
-//		//
-//		//
-//		//
-//		//
-//		//
-//		//
-//		//You should put the following code into a menu or Menu class
-//		System.out.println(ConsoleColour.WHITE);
-//		System.out.println("************************************************************");
-//		System.out.println("*     ATU - Dept. of Computer Science & Applied Physics    *");
-//		System.out.println("*                                                          *");
-//		System.out.println("*              Encoding Words with Suffixes                *");
-//		System.out.println("*                                                          *");
-//		System.out.println("************************************************************");
-//		System.out.println("(1) Specify Mapping File");
-//		System.out.println("(2) Specify Text File to Encode");
-//		System.out.println("(3) Specify Output File (default: ./out.txt)");
-//		System.out.println("(4) Configure Options");
-//		System.out.println("(5) Encode Text File");
-//		System.out.println("(6) Decode Text File");
-//		System.out.println("(?) Optional Extras...");
-//		System.out.println("(?) Quit");
-//		
-//		//Output a menu of options and solicit text from the user
-//		System.out.print(ConsoleColour.BLACK_BOLD_BRIGHT);
-//		System.out.print("Select Option [1-?]>");
-//		System.out.println();
-//		
-//		// Snippet here to test the encoding map in maPPer and test it
-//		System.out.println(ConsoleColour.GREEN_BOLD);
-//		System.out.println("\n[ TEST ] Loading Poblacht Na hEireann Pearse...\n");
-//		
-//		Mapper mapper = new Mapper();
-//		mapper.load("./encodings-10000.csv"); // file is in root  project Directory
-//		
-//		Map<String, Integer> encodingMap = mapper.getEncodingMap();
-//		System.out.println("Loaded " + encodingMap.size() + " entries.");
-//		
-//		System.out.println("Just show first 10 entries to start:");
-//		int count = 0;
-//		for (Map.Entry<String, Integer> entry : encodingMap.entrySet()) {
-//			System.out.println(entry.getKey() + " => " + entry.getValue());
-//			if (++count == 10) {
-//				break;
-//			}
-//		}
-//		
-//		// Snippet here to test the File Manager class
-//		FileManager fm = new FileManager();
-//		System.out.println("\n[ TEST ] Reading Poblacht file ");
-//		
-//		List<String> lines = fm.readTextFile("./PoblachtNaHEireannPearse.txt");
-//		
-//		System.out.println("Lines being read: " + lines.size());
-//		System.out.println("First few lines to b checked");
-//		
-//		for(int i = 0; i < Math.min(3, lines.size()); i++) {
-//			System.out.println(lines.get(i));
-//		}
-//		
-//		
-//		//Snippet to test the Encoder class
-//		System.out.println(ConsoleColour.CYAN_BOLD);
-//		System.out.println("\n[ TEST ] Encoding first couple of from text file \n");
-//		
-//		
-//		mapper.load("./encodings-10000.csv");
-//		
-//		Encoder encoder = new Encoder(mapper.getEncodingMap());
-//		
-//		// Just test with 3 for now
-//		for (int i = 0; i < Math.min(3, lines.size()); i++) {
-//			
-//			String line = lines.get(i);
-//			System.out.println("Unchanged: " + line);
-//			
-//			List<Integer> codes = encoder.encodeLine(line);
-//			
-//			System.out.println("Encoded: " + codes);
-//			System.out.println();
-//			
-//		}
-//		
-//		
-//		// Test the decoder class
-//		System.out.println(ConsoleColour.CYAN_BOLD);
-//		System.out.println("\n [ TEST ] Decoding encoded lines");
-//		
-//		// load decoder map
-//		Decoder decoder = new Decoder(mapper.getDecodingMap());
-//		
-//		//Encode and decode same line
-//		for (int i = 0; i < Math.min(3, lines.size()); i++) {
-//			
-//			String line = lines.get(i);
-//			List<Integer> codes = encoder.encodeLine(line);
-//			
-//			//Decode the list of nummber back to words
-//			String decodedLine = decoder.decodeLine(codes);
-//			
-//			System.out.println("Encoded: " + codes);
-//			System.out.println("Decoded: " + decodedLine);
-//			System.out.println();
-//			
-//		}
-//		
-//		//////////////////////////////////////////
-//		//////////////////////////////////////////
-//		// Encode the full file and write to output
-//		
-//		//Read the encoded file, decode, and write to output
-//		List<String> encodedLines = encoder.encodeFile(lines);
-//		fm.writeTextFile("./encoded.txt", encodedLines); //CALLING TO MAKE FILE
-//		System.out.println(ConsoleColour.GREEN + "\nEncoded file written the encoded.txt");
-//		
-//		
-//		
-//		// Read the encoded file, decode, and write to output
-//		List<String> readEncodedLines = fm.readTextFile("./encoded.txt");
-//		List<String> decodedLines = decoder.decodeFile(readEncodedLines);
-//		fm.writeTextFile("./decoded.txt", decodedLines); // CALLING TO MAKE THE FILE
-//		System.out.println(ConsoleColour.GREEN + "\nEncoded file written the encoded.txt");
-//		
-//		
-		}
-		//Progress meter
-		System.out.print(ConsoleColour.YELLOW);	//Change the colour of the console text
-		int size = 100;							//The size of the meter. 100 equates to 100%
-		for (int i =0 ; i < size ; i++) {		//The loop equates to a sequence of processing steps
-			printProgress(i + 1, size); 		//After each (some) steps, update the progress meter
-			Thread.sleep(10);					//Slows things down so the animation is visible 
-		}
-		
-		
-		
-	}
-	
 
-	
+				default:
+					System.out.println("INVALID, This operation chosen must be between 1-6");
+			}
+
+			System.out.println("\n\n");
+		}
+
+		// Progress meter
+		System.out.print(ConsoleColour.YELLOW);
+		int size = 100;
+		for (int i = 0; i < size; i++) {
+			printProgress(i + 1, size);
+			Thread.sleep(10);
+		}
+	}
+
 	/*
 	 *  Terminal Progress Meter
 	 *  -----------------------
@@ -261,40 +131,24 @@ public class Runner {
 	 *  3) If the variable size is greater than the terminal width, a new line
 	 *     escape character "\n" will be automatically added and the meter won't
 	 *     work properly.  
-	 *  
-	 * 
 	 */
 	public static void printProgress(int index, int total) {
-		if (index > total) return;	//Out of range
-        int size = 50; 				//Must be less than console width
-	    char done = '█';			//Change to whatever you like.
-	    char todo = '░';			//Change to whatever you like.
-	    
-	    //Compute basic metrics for the meter
-        int complete = (100 * index) / total;
-        int completeLen = size * complete / 100;
-        
-        /*
-         * A StringBuilder should be used for string concatenation inside a 
-         * loop. However, as the number of loop iterations is small, using
-         * the "+" operator may be more efficient as the instructions can
-         * be optimized by the compiler. Either way, the performance overhead
-         * will be marginal.  
-         */
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        for (int i = 0; i < size; i++) {
-        	sb.append((i < completeLen) ? done : todo);
-        }
-        
-        /*
-         * The line feed escape character "\r" returns the cursor to the 
-         * start of the current line. Calling print(...) overwrites the
-         * existing line and creates the illusion of an animation.
-         */
-        System.out.print("\r" + sb + "] " + complete + "%");
-        
-        //Once the meter reaches its max, move to a new line.
-        if (done == total) System.out.println("\n");
-    }
+		if (index > total) return;
+		int size = 50;
+		char done = '█';
+		char todo = '░';
+
+		int complete = (100 * index) / total;
+		int completeLen = size * complete / 100;
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		for (int i = 0; i < size; i++) {
+			sb.append((i < completeLen) ? done : todo);
+		}
+
+		System.out.print("\r" + sb + "] " + complete + "%");
+
+		if (done == total) System.out.println("\n");
+	}
 }
