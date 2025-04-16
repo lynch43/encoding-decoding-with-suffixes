@@ -2,10 +2,53 @@ package ie.atu.sw;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Runner {
 
 	public static void main(String[] args) throws Exception {
+		
+		// Scanner for the menu inputs
+		Scanner scanner = new Scanner(System.in);
+		// Default values
+		String mappingFile = "./encodings-1000.csv";
+		String inputFile = "";
+		String outputFile = "./out.txt";
+		String mode = "encode"; // or boolean??? if it gets more complicated
+		
+		// Main Loop
+		while (running) {
+			System.out.println(ConsoleColour.WHITE);
+			System.out.println("************************************************************");
+			System.out.println("*     ATU - Dept. of Computer Science & Applied Physics    *");
+			System.out.println("*                                                          *");
+			System.out.println("*              Encoding Words with Suffixes                *");
+			System.out.println("*                                                          *");
+			System.out.println("************************************************************");
+			System.out.println("(1) Specify Mapping File");
+			System.out.println("(2) Specify Text File to Encode");
+			System.out.println("(3) Specify Output File (default: ./out.txt)");
+			System.out.println("(4) Configure Options");
+			System.out.println("(5) Encode Text File");
+			System.out.println("(6) Decode Text File");
+			System.out.println("(?) Optional Extras...");
+			
+			
+			
+			System.out.println(ConsoleColour.BLACK_BOLD_BRIGHT + "Select Option [1-6]: ");
+			String choice = scanner.nextLine();
+			
+			switch (choice) {
+				
+			
+			}
+		}
+		//
+		//
+		//
+		//
+		//
+		//
 		//You should put the following code into a menu or Menu class
 		System.out.println(ConsoleColour.WHITE);
 		System.out.println("************************************************************");
@@ -28,7 +71,7 @@ public class Runner {
 		System.out.print("Select Option [1-?]>");
 		System.out.println();
 		
-		// Snippet here to test the encoding map in mapper and test it
+		// Snippet here to test the encoding map in maPPer and test it
 		System.out.println(ConsoleColour.GREEN_BOLD);
 		System.out.println("\n[ TEST ] Loading Poblacht Na hEireann Pearse...\n");
 		
