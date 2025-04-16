@@ -17,21 +17,25 @@ public class Runner {
 		String mode = "encode"; // or boolean??? if it gets more complicated
 		
 		// Main Loop
+		
+		// Program on or off
+		boolean running = true;
+		
 		while (running) {
 			System.out.println(ConsoleColour.WHITE);
 			System.out.println("************************************************************");
-			System.out.println("*     ATU - Dept. of Computer Science & Applied Physics    *");
+			System.out.println("*     Danny Lynch: Data Structures and Algorithms ATU      *");
 			System.out.println("*                                                          *");
 			System.out.println("*              Encoding Words with Suffixes                *");
 			System.out.println("*                                                          *");
 			System.out.println("************************************************************");
-			System.out.println("(1) Specify Mapping File");
-			System.out.println("(2) Specify Text File to Encode");
+			System.out.println("(1) Specify Mapping File (default: ./encodings-10000.csv)");
+			System.out.println("(2) Specify Text File to Encode / Decode");
 			System.out.println("(3) Specify Output File (default: ./out.txt)");
 			System.out.println("(4) Configure Options");
-			System.out.println("(5) Encode Text File");
-			System.out.println("(6) Decode Text File");
-			System.out.println("(?) Optional Extras...");
+			System.out.println("(5) Encode || Decode");
+			System.out.println("(6) Run");
+			System.out.println("(?) Exit()");
 			
 			
 			
@@ -39,7 +43,30 @@ public class Runner {
 			String choice = scanner.nextLine();
 			
 			switch (choice) {
+				case "1":
+				System.out.println("Enter mapping file path: ");
+				mappingFile = scanner.nextLine();
+				break;
 				
+				case "2":
+					System.out.println("Enter input text file path: ");
+					inputFile = scanner.nextLine();
+					break;
+				case "3":
+					System.out.println("Enter output file path:");
+					outputFile =  scanner.nextLine();
+					break;
+				case "4":
+					System.out.println("Choose mode (encode/decode): ");
+					mode = scanner.nextLine().trim().toLowerCase();
+					break;
+				case "5":
+					
+					// Do the actual encode or decode
+					break;
+				case "6":
+					running = false;
+					break;
 			
 			}
 		}
