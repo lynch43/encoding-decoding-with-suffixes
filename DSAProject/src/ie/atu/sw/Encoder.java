@@ -4,66 +4,70 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-// Need this class to convert the plain .txt files , more specifically the words inside them
-// into a list of numeric codes using a provided encoding map.
-
+/**
+ * encoder takes lines of normal text and turns them into numbers
+ * it looks up words in the map and builds a list of codes
+ * used when converting a full txt file before saving as .encoded
+ * 
+ * Big-O for encoding a line is O(n) where n = number of words
+ * Big-O for a full file is O(m * n) where m = lines and n = words per line
+ */
 public class Encoder {
-	
-	
+
 	private Map<String, Integer> encodingMap;
-	
-	// parameter line = the line of text that will get encoded
-	// Returns a list of integer codes the = to the words / suffix in the line
+
+	/**
+	 * sets the encoding map to use when matching words to numbers
+	 *
+	 * @param encodingMap this map comes from Mapper class
+	 */
 	public Encoder(Map<String, Integer> encodingMap) {
-		
 		this.encodingMap = encodingMap;
-		
 	}
-	
+
+	/**
+	 * encodes one line of text to a list of integers
+	 *
+	 * @param line a string like a sentence or row from a file
+	 * @return list of codes (0 used if no match found)
+	 *
+	 * Big-O: O(n) where n = number of words in the line
+	 * each lookup in the map is O(1) so it scales with word count
+	 */
 	public List<Integer> encodeLine(String line) {
-		
 		List<Integer> codes = new ArrayList<>();
-		
-		
-		// This will lower case the word then split the line of text into individual words using 
 		String[] words = line.toLowerCase().split("\\s+");
-		
-		for (String word: words) {
-			// Match any character not in a-z or then replace with empty string. 
-			word = word.replaceAll("[^a-z@]"," ");
-		
-		
+
+		for (String word : words) {
+			word = word.replaceAll("[^a-z@]", " ");
 			if (encodingMap.containsKey(word)) {
 				codes.add(encodingMap.get(word));
 			} else {
-				// if the word is not in the map then we need it to just have a 0
-				codes.add(0);
+				codes.add(0); // fallback when word isn't found
 			}
-		
 		}
-		return codes; // Return the final list of encoded numbers
+
+		return codes;
 	}
-	
-	
+
+	/**
+	 * takes a list of lines and encodes all of them
+	 * joins the numbers as strings per line so they can be saved
+	 *
+	 * @param lines the full text file content, line by line
+	 * @return list of encoded lines as strings of numbers
+	 *
+	 * Big-O: O( n? ) I am not sure or is it quadratic? because it is lines * words in the line
+	 */
 	public List<String> encodeFile(List<String> lines) {
 		List<String> output = new ArrayList<>();
-		
-		for (String line : lines) {
-			
-			List<Integer> codes = encodeLine(line);
-			
-			// Join codes into a string with some whitespaces
-			String encodedLine = codes.toString()
-									  .replaceAll("[\\[\\],]", "") // trying to remove brackets
-									  .trim();
-			output.add(encodedLine);
-			
-		}
-		
-		return output;
-		
-	}
-	
-	
 
-}
+		for (String line : lines) {
+			List<Integer> codes = encodeLine(line);
+			String encodedLine = codes.toString().replaceAll("[\\[\\],]", "").trim();
+			output.add(encodedLine);
+		}
+
+		return output;
+	}
+} 

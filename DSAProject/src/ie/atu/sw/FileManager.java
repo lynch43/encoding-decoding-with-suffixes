@@ -11,7 +11,7 @@ import java.util.List;
  * file manager handles reading and writing text files for the encoder and decoder
  * i use this to get input files and save output so nothing is hardcoded
  * 
- * reading is just line by line so its O(n) and writing same idea
+ * reading is just line by line so its O(n) and writing is same idea
  */
 public class FileManager {
 	
