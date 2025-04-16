@@ -4,19 +4,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * runner is where the program kicks off
+ * shows the menu and lets the user pick what files to load and what mode to use
+ * uses the other classes to actually do the encoding or decoding
+ *
+ * Big-O not really a thing here since the menu is driven by user input
+ */
 public class Runner {
 
+	/**
+	 * shows the menu, gets file paths and runs encode or decode based on user choice
+	 * 
+	 * @param args not used here but main needs it
+	 * @throws Exception in case something breaks like a missing file
+	 */
 	public static void main(String[] args) throws Exception {
-		// Scanner for the menu inputs
 		Scanner scanner = new Scanner(System.in);
-		// Default values
 		String mappingFile = "./encodings-10000.csv";
 		String inputFile = "";
 		String outputFile = "./out.txt";
 		String mode = "encode";
-
-		// Main Loop
-		// Program on or off
 		boolean running = true;
 
 		while (running) {
@@ -35,7 +43,7 @@ public class Runner {
 			System.out.println("(6) Exit");
 
 			System.out.print(ConsoleColour.BLACK_BOLD_BRIGHT + "Select Option [1-6]: ");
-			System.out.flush(); // Ensure prompt appears in Eclipse console
+			System.out.flush();
 			String choice = scanner.nextLine();
 
 			switch (choice) {
@@ -101,7 +109,6 @@ public class Runner {
 			System.out.println("\n\n");
 		}
 
-		// Progress meter
 		System.out.print(ConsoleColour.YELLOW);
 		int size = 100;
 		for (int i = 0; i < size; i++) {
@@ -110,27 +117,12 @@ public class Runner {
 		}
 	}
 
-	/*
-	 *  Terminal Progress Meter
-	 *  -----------------------
-	 *  You might find the progress meter below useful. The progress effect 
-	 *  works best if you call this method from inside a loop and do not call
-	 *  System.out.println(....) until the progress meter is finished.
-	 *  
-	 *  Please note the following carefully:
-	 *  
-	 *  1) The progress meter will NOT work in the Eclipse console, but will
-	 *     work on Windows (DOS), Mac and Linux terminals.
-	 *     
-	 *  2) The meter works by using the line feed character "\r" to return to
-	 *     the start of the current line and writes out the updated progress
-	 *     over the existing information. If you output any text between 
-	 *     calling this method, i.e. System.out.println(....), then the next
-	 *     call to the progress meter will output the status to the next line.
-	 *      
-	 *  3) If the variable size is greater than the terminal width, a new line
-	 *     escape character "\n" will be automatically added and the meter won't
-	 *     work properly.  
+	/**
+	 * just a visual progress bar for fun
+	 * doesn't really help but it looks cool in terminal
+	 *
+	 * @param index current number
+	 * @param total how far we go
 	 */
 	public static void printProgress(int index, int total) {
 		if (index > total) return;
