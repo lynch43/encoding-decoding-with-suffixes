@@ -3,58 +3,73 @@ package ie.atu.sw;
 import java.util.List;
 import java.util.Map;
 
-// Plan is to covert numeric codes back into their original or suffix using a decoding map
-
+/**
+ * decoder takes in a list of numbers and turns them back into words or suffixes
+ * this is the reverse of what encoder does
+ * we use the decoding map to look everything up
+ *
+ * O(n) for decodeLine where n is amount of codes in a line
+ * O(n) 
+ */
 public class Decoder {
-	
-	
+
 	private Map<Integer, String> decodingMap;
-	
-	// Constructor for the Runner class , pretty much the same as the encoder version
+
+	/**
+	 * sets the decoding map we gonna use to turn codes into words
+	 * @param decodingMap comes from Mapper -  same way as Encoder
+	 */
 	public Decoder(Map<Integer, String> decodingMap) {
-			
 		this.decodingMap = decodingMap;
-		
 	}
-	
+
+	/**
+	 * this method takes a list of numbers and tries to turn them into words
+	 * if a number isnt in the map we just throw in [???] instead
+	 *
+	 * @param codes list of integers from the encoded file
+	 * @return a string with the decoded sentence
+	 *
+	 * O(n) where n = amount of codes in the line
+	 */
 	public String decodeLine(List<Integer> codes) {
-		
 		StringBuilder result = new StringBuilder();
-		
-		// Loop through epach code as it is read
+
 		for (Integer code : codes) {
-			// Search for that word in out decoding map
 			String word = decodingMap.getOrDefault(code, "[???]");
-			
-			//put thyye space back in between
 			result.append(word).append(" ");
 		}
-		
+
 		return result.toString().trim();
 	}
-	
+
+	/**
+	 * takes a list of lines from an encoded file and decodes them all
+	 * each line has space separated codes
+	 *
+	 * @param encodedLines lines from a file where each number is a code
+	 * @return decoded lines as readable sentences
+	 *
+	 * O(n) or m * n
+	 */
 	public List<String> decodeFile(List<String> encodedLines) {
 		List<String> output = new java.util.ArrayList<>();
-		
+
 		for (String line : encodedLines) {
 			String[] parts = line.trim().split("\\s+");
 			List<Integer> codes = new java.util.ArrayList<>();
-			
-			for(String part : parts) {
+
+			for (String part : parts) {
 				try {
 					codes.add(Integer.parseInt(part));
 				} catch (NumberFormatException e) {
 					codes.add(0);
 				}
 			}
-			
-			// Decode it then and add to output happy days
-			output.add(decodeLine(codes));
-			
-		}
-		
-		return output;
-			
-	}
 
-}
+			output.add(decodeLine(codes));
+		}
+
+		return output;
+	}
+} 
