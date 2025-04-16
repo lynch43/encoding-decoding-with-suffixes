@@ -11,7 +11,7 @@ public class Runner {
 		// Scanner for the menu inputs
 		Scanner scanner = new Scanner(System.in);
 		// Default values
-		String mappingFile = "./encodings-1000.csv";
+		String mappingFile = "./encodings-10000.csv";
 		String inputFile = "";
 		String outputFile = "./out.txt";
 		String mode = "encode"; // or boolean??? if it gets more complicated
@@ -63,6 +63,32 @@ public class Runner {
 				case "5":
 					
 					// Do the actual encode or decode
+					
+					try {
+						Mapper mapper = new Mapper();
+						mapper.load(mappingFile);
+						FileManager fm = new FileManager();
+						
+						if (mode.equals("encode")) {
+							List<String> inputLines = fm.readTextFile(inputFile);
+							Encoder encoder = new Encoder(mapper.getEncodingMap());
+							List<String> encodedLines = encoder.encodeFile(inputLines);
+							fm.writeTextFile(outputFile, encodedLines);
+							System.out.println(ConsoleColour.GREEN + "[SUCCESS] file encoding there");
+						}
+						else if(mode.equals("decode")) {
+							List<String> encodedLines = fm.readTextFile(inputFile);
+							Decoder decoder = new Decoder(mapper.getDecodingMap());
+							List<String> decodedLines = decoder.decodeFile(encodedLines);
+							fm.writeTextFile(outputFile, decodedLines);
+							System.out.println(ConsoleColour.GREEN + "[SUCCESS] file decoded in " + outputFile);
+						} else {
+							System.out.println(ConsoleColour.RED + "[ERROR] Invalid mode for program");
+						}
+					} catch (Exception e) {
+						System.out.println(ConsoleColour.RED + "[ ERROR ] Something has failed" + e.getMessage());
+					}
+					
 					break;
 				case "6":
 					running = false;
@@ -72,132 +98,134 @@ public class Runner {
 					System.out.println("INVALID, try aggain");
 			
 			}
+			
+			System.out.println("\n\n\n"); // make some space
+//		}
+//		//
+//		//
+//		//
+//		//
+//		//
+//		//
+//		//You should put the following code into a menu or Menu class
+//		System.out.println(ConsoleColour.WHITE);
+//		System.out.println("************************************************************");
+//		System.out.println("*     ATU - Dept. of Computer Science & Applied Physics    *");
+//		System.out.println("*                                                          *");
+//		System.out.println("*              Encoding Words with Suffixes                *");
+//		System.out.println("*                                                          *");
+//		System.out.println("************************************************************");
+//		System.out.println("(1) Specify Mapping File");
+//		System.out.println("(2) Specify Text File to Encode");
+//		System.out.println("(3) Specify Output File (default: ./out.txt)");
+//		System.out.println("(4) Configure Options");
+//		System.out.println("(5) Encode Text File");
+//		System.out.println("(6) Decode Text File");
+//		System.out.println("(?) Optional Extras...");
+//		System.out.println("(?) Quit");
+//		
+//		//Output a menu of options and solicit text from the user
+//		System.out.print(ConsoleColour.BLACK_BOLD_BRIGHT);
+//		System.out.print("Select Option [1-?]>");
+//		System.out.println();
+//		
+//		// Snippet here to test the encoding map in maPPer and test it
+//		System.out.println(ConsoleColour.GREEN_BOLD);
+//		System.out.println("\n[ TEST ] Loading Poblacht Na hEireann Pearse...\n");
+//		
+//		Mapper mapper = new Mapper();
+//		mapper.load("./encodings-10000.csv"); // file is in root  project Directory
+//		
+//		Map<String, Integer> encodingMap = mapper.getEncodingMap();
+//		System.out.println("Loaded " + encodingMap.size() + " entries.");
+//		
+//		System.out.println("Just show first 10 entries to start:");
+//		int count = 0;
+//		for (Map.Entry<String, Integer> entry : encodingMap.entrySet()) {
+//			System.out.println(entry.getKey() + " => " + entry.getValue());
+//			if (++count == 10) {
+//				break;
+//			}
+//		}
+//		
+//		// Snippet here to test the File Manager class
+//		FileManager fm = new FileManager();
+//		System.out.println("\n[ TEST ] Reading Poblacht file ");
+//		
+//		List<String> lines = fm.readTextFile("./PoblachtNaHEireannPearse.txt");
+//		
+//		System.out.println("Lines being read: " + lines.size());
+//		System.out.println("First few lines to b checked");
+//		
+//		for(int i = 0; i < Math.min(3, lines.size()); i++) {
+//			System.out.println(lines.get(i));
+//		}
+//		
+//		
+//		//Snippet to test the Encoder class
+//		System.out.println(ConsoleColour.CYAN_BOLD);
+//		System.out.println("\n[ TEST ] Encoding first couple of from text file \n");
+//		
+//		
+//		mapper.load("./encodings-10000.csv");
+//		
+//		Encoder encoder = new Encoder(mapper.getEncodingMap());
+//		
+//		// Just test with 3 for now
+//		for (int i = 0; i < Math.min(3, lines.size()); i++) {
+//			
+//			String line = lines.get(i);
+//			System.out.println("Unchanged: " + line);
+//			
+//			List<Integer> codes = encoder.encodeLine(line);
+//			
+//			System.out.println("Encoded: " + codes);
+//			System.out.println();
+//			
+//		}
+//		
+//		
+//		// Test the decoder class
+//		System.out.println(ConsoleColour.CYAN_BOLD);
+//		System.out.println("\n [ TEST ] Decoding encoded lines");
+//		
+//		// load decoder map
+//		Decoder decoder = new Decoder(mapper.getDecodingMap());
+//		
+//		//Encode and decode same line
+//		for (int i = 0; i < Math.min(3, lines.size()); i++) {
+//			
+//			String line = lines.get(i);
+//			List<Integer> codes = encoder.encodeLine(line);
+//			
+//			//Decode the list of nummber back to words
+//			String decodedLine = decoder.decodeLine(codes);
+//			
+//			System.out.println("Encoded: " + codes);
+//			System.out.println("Decoded: " + decodedLine);
+//			System.out.println();
+//			
+//		}
+//		
+//		//////////////////////////////////////////
+//		//////////////////////////////////////////
+//		// Encode the full file and write to output
+//		
+//		//Read the encoded file, decode, and write to output
+//		List<String> encodedLines = encoder.encodeFile(lines);
+//		fm.writeTextFile("./encoded.txt", encodedLines); //CALLING TO MAKE FILE
+//		System.out.println(ConsoleColour.GREEN + "\nEncoded file written the encoded.txt");
+//		
+//		
+//		
+//		// Read the encoded file, decode, and write to output
+//		List<String> readEncodedLines = fm.readTextFile("./encoded.txt");
+//		List<String> decodedLines = decoder.decodeFile(readEncodedLines);
+//		fm.writeTextFile("./decoded.txt", decodedLines); // CALLING TO MAKE THE FILE
+//		System.out.println(ConsoleColour.GREEN + "\nEncoded file written the encoded.txt");
+//		
+//		
 		}
-		//
-		//
-		//
-		//
-		//
-		//
-		//You should put the following code into a menu or Menu class
-		System.out.println(ConsoleColour.WHITE);
-		System.out.println("************************************************************");
-		System.out.println("*     ATU - Dept. of Computer Science & Applied Physics    *");
-		System.out.println("*                                                          *");
-		System.out.println("*              Encoding Words with Suffixes                *");
-		System.out.println("*                                                          *");
-		System.out.println("************************************************************");
-		System.out.println("(1) Specify Mapping File");
-		System.out.println("(2) Specify Text File to Encode");
-		System.out.println("(3) Specify Output File (default: ./out.txt)");
-		System.out.println("(4) Configure Options");
-		System.out.println("(5) Encode Text File");
-		System.out.println("(6) Decode Text File");
-		System.out.println("(?) Optional Extras...");
-		System.out.println("(?) Quit");
-		
-		//Output a menu of options and solicit text from the user
-		System.out.print(ConsoleColour.BLACK_BOLD_BRIGHT);
-		System.out.print("Select Option [1-?]>");
-		System.out.println();
-		
-		// Snippet here to test the encoding map in maPPer and test it
-		System.out.println(ConsoleColour.GREEN_BOLD);
-		System.out.println("\n[ TEST ] Loading Poblacht Na hEireann Pearse...\n");
-		
-		Mapper mapper = new Mapper();
-		mapper.load("./encodings-10000.csv"); // file is in root  project Directory
-		
-		Map<String, Integer> encodingMap = mapper.getEncodingMap();
-		System.out.println("Loaded " + encodingMap.size() + " entries.");
-		
-		System.out.println("Just show first 10 entries to start:");
-		int count = 0;
-		for (Map.Entry<String, Integer> entry : encodingMap.entrySet()) {
-			System.out.println(entry.getKey() + " => " + entry.getValue());
-			if (++count == 10) {
-				break;
-			}
-		}
-		
-		// Snippet here to test the File Manager class
-		FileManager fm = new FileManager();
-		System.out.println("\n[ TEST ] Reading Poblacht file ");
-		
-		List<String> lines = fm.readTextFile("./PoblachtNaHEireannPearse.txt");
-		
-		System.out.println("Lines being read: " + lines.size());
-		System.out.println("First few lines to b checked");
-		
-		for(int i = 0; i < Math.min(3, lines.size()); i++) {
-			System.out.println(lines.get(i));
-		}
-		
-		
-		//Snippet to test the Encoder class
-		System.out.println(ConsoleColour.CYAN_BOLD);
-		System.out.println("\n[ TEST ] Encoding first couple of from text file \n");
-		
-		
-		mapper.load("./encodings-10000.csv");
-		
-		Encoder encoder = new Encoder(mapper.getEncodingMap());
-		
-		// Just test with 3 for now
-		for (int i = 0; i < Math.min(3, lines.size()); i++) {
-			
-			String line = lines.get(i);
-			System.out.println("Unchanged: " + line);
-			
-			List<Integer> codes = encoder.encodeLine(line);
-			
-			System.out.println("Encoded: " + codes);
-			System.out.println();
-			
-		}
-		
-		
-		// Test the decoder class
-		System.out.println(ConsoleColour.CYAN_BOLD);
-		System.out.println("\n [ TEST ] Decoding encoded lines");
-		
-		// load decoder map
-		Decoder decoder = new Decoder(mapper.getDecodingMap());
-		
-		//Encode and decode same line
-		for (int i = 0; i < Math.min(3, lines.size()); i++) {
-			
-			String line = lines.get(i);
-			List<Integer> codes = encoder.encodeLine(line);
-			
-			//Decode the list of nummber back to words
-			String decodedLine = decoder.decodeLine(codes);
-			
-			System.out.println("Encoded: " + codes);
-			System.out.println("Decoded: " + decodedLine);
-			System.out.println();
-			
-		}
-		
-		//////////////////////////////////////////
-		//////////////////////////////////////////
-		// Encode the full file and write to output
-		
-		//Read the encoded file, decode, and write to output
-		List<String> encodedLines = encoder.encodeFile(lines);
-		fm.writeTextFile("./encoded.txt", encodedLines); //CALLING TO MAKE FILE
-		System.out.println(ConsoleColour.GREEN + "\nEncoded file written the encoded.txt");
-		
-		
-		
-		// Read the encoded file, decode, and write to output
-		List<String> readEncodedLines = fm.readTextFile("./encoded.txt");
-		List<String> decodedLines = decoder.decodeFile(readEncodedLines);
-		fm.writeTextFile("./decoded.txt", decodedLines); // CALLING TO MAKE THE FILE
-		System.out.println(ConsoleColour.GREEN + "\nEncoded file written the encoded.txt");
-		
-		
-		
 		//Progress meter
 		System.out.print(ConsoleColour.YELLOW);	//Change the colour of the console text
 		int size = 100;							//The size of the meter. 100 equates to 100%
