@@ -67,6 +67,9 @@ public class Runner {
 				case "6":
 					running = false;
 					break;
+					
+				default:
+					System.out.println("INVALID, try aggain");
 			
 			}
 		}
