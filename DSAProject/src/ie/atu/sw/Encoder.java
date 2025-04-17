@@ -34,7 +34,7 @@ public class Encoder {
 	 * Big-O: O(n) where n = number of words in the line
 	 * each lookup in the map is O(1) so it scales with word count
 	 */
-	public List<Integer> encodeLine(String line) {
+	public List<Integer> encodeLine(String line) {   
 		List<Integer> codes = new ArrayList<>();
 		String[] words = line.toLowerCase().split("\\s+");
 
@@ -43,9 +43,11 @@ public class Encoder {
 			if (encodingMap.containsKey(word)) {
 				codes.add(encodingMap.get(word));
 			} else {
-				codes.add(0);
+				boolean found = false;
+				String[] suffixes = { "ed", "ing", "tion", "able", "ion", "ment", "ness", "ous"}
+				;
 			}
-		}
+		} 
 
 		return codes;
 	}
