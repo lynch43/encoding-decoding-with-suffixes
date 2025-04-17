@@ -42,13 +42,15 @@ public class Mapper {
 					 decodingMap.put(value, key);
 				}
 				catch(Exception e){
-					System.out.println("Skipping");
+					System.out.println("Skipping invalid line" + line);
 				}
 				
 			}
 		}
 
 		reader.close();
+		System.out.println("Encoding map has this many entries: " + encodingMap.size());
+		encodingMap.forEach((key, value) -> System.out.println(key + "--" + value));
 	}
 
 	/**

@@ -47,6 +47,10 @@ public class Decoder {
 
 		for (Integer code : codes) {
 			String word = decodingMap.getOrDefault(code, "[???]");
+			// TEST
+			if ("[???]".equals(word)) {
+				System.out.println("Code:" + code + "Not found?");
+			}
 			result.append(word).append(" ");
 		}
 
