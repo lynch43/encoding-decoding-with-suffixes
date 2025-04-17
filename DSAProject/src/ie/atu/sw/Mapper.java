@@ -32,12 +32,19 @@ public class Mapper {
 
 		while ((line = reader.readLine()) != null) {
 			String[] parts = line.split(",");
+			
 			if (parts.length == 2) {
-				String key = parts[0];
-				Integer value = Integer.parseInt(parts[1]);
-
-				encodingMap.put(key, value);
-				decodingMap.put(value, key);
+				String key = parts[0].trim();
+				String valueS = parts[1].trim(); // integer or string?
+				try {
+					 Integer value = Integer.parseInt(valueS);
+					 encodingMap.put(key, value);
+					 decodingMap.put(value, key);
+				}
+				catch(Exception e){
+					System.out.println("Skipping");
+				}
+				
 			}
 		}
 

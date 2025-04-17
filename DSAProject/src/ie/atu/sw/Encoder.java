@@ -44,7 +44,20 @@ public class Encoder {
 				codes.add(encodingMap.get(word));
 			} else {
 				boolean found = false;
-				String[] suffixes = { "ed", "ing", "tion", "able", "ion", "ment", "ness", "ous"}
+				String[] suffixes = { "ed", "ing", "tion", "able", "ion", "ment", "ness", "ous"};
+				
+				for (String suffix : suffixes) {
+					
+					if (word.endsWith(suffix)) {
+						String key = "@@" + suffix;
+						if(encodingMap.containsKey(key)) {
+							found = true;
+							break;
+						}
+						
+					}
+					
+				}
 				;
 			}
 		} 
