@@ -12,8 +12,11 @@ import java.util.Map;
  * O(n) 
  */
 public class Decoder {
+	
+
 
 	private Map<Integer, String> decodingMap;
+	
 
 	/**
 	 * sets the decoding map we gonna use to turn codes into words
@@ -21,6 +24,13 @@ public class Decoder {
 	 */
 	public Decoder(Map<Integer, String> decodingMap) {
 		this.decodingMap = decodingMap;
+		
+		// [ TEST ] 
+		System.out.println("[TEST] Decoding map loaded: " +decodingMap.size() +
+		 "entries");
+		decodingMap.entrySet().stream().limit(10).forEach(entry ->
+		System.out.println(entry.getKey() + " => " + entry.getValue()));
+		 
 	}
 
 	/**
@@ -72,4 +82,6 @@ public class Decoder {
 
 		return output;
 	}
+	
+	
 } 
