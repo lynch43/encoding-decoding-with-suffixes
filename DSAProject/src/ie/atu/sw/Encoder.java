@@ -9,8 +9,8 @@ import java.util.Map;
  * it looks up words in the map and builds a list of codes
  * used when converting a full txt file before saving as .encoded
  * 
- * Big-O for encoding a line is O(n) where n = number of words
- * Big-O for a full file is O(m * n) where m = lines and n = words per line
+ * Big-O for encoding a line is O(n)
+ * Big-O for a full file is O()
  */
 public class Encoder {
 
@@ -43,7 +43,7 @@ public class Encoder {
 			if (encodingMap.containsKey(word)) {
 				codes.add(encodingMap.get(word));
 			} else {
-				codes.add(0); // fallback when word isn't found
+				codes.add(0);
 			}
 		}
 
