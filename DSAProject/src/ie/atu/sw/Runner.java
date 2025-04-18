@@ -84,11 +84,39 @@ public class Runner {
 							fm.writeTextFile(outputFile, encodedLines);
 							System.out.println(ConsoleColour.GREEN + "[SUCCESS] File encoded to: " + outputFile);
 						} else if (mode.equals("decode")) {
+							System.out.println("[DEBUG] Decoding mode selected");
+							System.out.println("[DEBUG] Loading from file: " + inputFile);
+							System.out.println("[DEBUG] Writing decoded file to: " + outputFile);
+
 							List<String> encodedLines = fm.readTextFile(inputFile);
+							System.out.println("[DEBUG] Lines in encoded file: " + encodedLines.size());
+
 							Decoder decoder = new Decoder(mapper.getDecodingMap());
+
+							// first few lines of encoder
+							
+							System.out.println("First 3 lines from input:");
+							for (int i = 0; i < Math.min(3, encodedLines.size()); i++) {
+								System.out.println("line " + (i + 1) + ": " + encodedLines.get(i));
+							}
+
 							List<String> decodedLines = decoder.decodeFile(encodedLines);
+
+							// extra: show some of the output for sanity
+							System.out.println("[DEBUG] First 3 decoded lines:");
+							for (int i = 0; i < Math.min(3, decodedLines.size()); i++) {
+								System.out.println("DECODED " + (i + 1) + ": " + decodedLines.get(i));
+							}
+
 							fm.writeTextFile(outputFile, decodedLines);
 							System.out.println(ConsoleColour.GREEN + "[SUCCESS] File decoded to: " + outputFile);
+										
+							
+//							List<String> encodedLines = fm.readTextFile(inputFile);
+//							Decoder decoder = new Decoder(mapper.getDecodingMap());
+//							List<String> decodedLines = decoder.decodeFile(encodedLines);
+//							fm.writeTextFile(outputFile, decodedLines);
+//							System.out.println(ConsoleColour.GREEN + "[SUCCESS] File decoded to: " + outputFile);
 						} else {
 							System.out.println(ConsoleColour.RED + "[ERROR] You must choose to Encode or Decode");
 						}

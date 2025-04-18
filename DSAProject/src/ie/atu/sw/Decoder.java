@@ -25,8 +25,18 @@ public class Decoder {
 		// [ TEST ] 
 		System.out.println("[TEST] Decoding map loaded: " + decodingMap.size() + " entries");
 		decodingMap.entrySet().stream().limit(10).forEach(entry ->
-			System.out.println(entry.getKey() + " => " + entry.getValue())
-		);
+			System.out.println(entry.getKey() + " => " + entry.getValue()));
+		
+		System.out.println("|||||||||||||||||||||||||||||||||||||||||||||||||");
+		System.out.println("Testing specific number. does decodingMap contain 107");
+		
+		// KNOWN CODES
+		System.out.println("172 | " + decodingMap.get(172));
+		System.out.println("698 | " + decodingMap.get(698));
+		System.out.println("107 | " + decodingMap.get(107));
+		System.out.println("114 | " + decodingMap.get(114));
+		
+	
 	}
 
 	/**
