@@ -24,7 +24,7 @@ public class Mapper {
 	 * @throws Exception if the file can't be opened or parsed
 	 *
 	 * Big-O: O(n) where n is the number of lines in the file
-	 * Each line is read and inserted into two hash maps (O(1) per insert)
+	 * Each line is read and inserted into two hash maps (O(1)) for each thing inserted
 	 */
 	public void load(String filePath) throws Exception {
 		BufferedReader reader = new BufferedReader(new FileReader(filePath));

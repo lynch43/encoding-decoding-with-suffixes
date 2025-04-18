@@ -3,6 +3,7 @@ package ie.atu.sw;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.io.File;
 
 /**
  * runner is where the program kicks off
@@ -14,10 +15,18 @@ import java.util.Scanner;
 public class Runner {
 
 	/**
+	 * 
+	 * 
+	 * 
 	 * shows the menu, gets file paths and runs encode or decode based on user choice
 	 * 
 	 * @param args not used here but main needs it
 	 * @throws Exception in case something breaks like a missing file
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
 	 */
 	public static void main(String[] args) throws Exception {
 		Scanner scanner = new Scanner(System.in);
@@ -35,44 +44,45 @@ public class Runner {
 			System.out.println("*              Encoding Words with Suffixes                *");
 			System.out.println("*                                                          *");
 			System.out.println("************************************************************");
-			System.out.println("(1) Specify Mapping File (default: ./encodings-10000.csv)");
-			System.out.println("(2) Specify Text File to Encode / Decode");
-			System.out.println("(3) Specify Output File (default: ./out.txt)");
-			System.out.println("(4) Configure Options");
-			System.out.println("(5) Encode || Decode");
-			System.out.println("(6) Exit");
+			System.out.println("(1) Configure File Paths & Options");
+			System.out.println("(2) Show Current Configuration");
+			System.out.println("(3) Run Encoding or Decoding");
+			System.out.println("(4) Exit");
 
-			System.out.print(ConsoleColour.BLACK_BOLD_BRIGHT + "Select Option [1-6]: ");
+			System.out.print(ConsoleColour.BLACK_BOLD_BRIGHT + "Select Option [1-4]: ");
 			System.out.flush();
 			String choice = scanner.nextLine();
 
 			switch (choice) {
 				case "1":
-					System.out.print("Enter mapping file path: ");
-					System.out.flush();
-					mappingFile = scanner.nextLine();
-					break;
+					System.out.print("Enter mapping file path (default: ./encodings-10000.csv): ");
+					mappingFile = scanner.nextLine().trim();
+					if (mappingFile.isEmpty()) mappingFile = "./encodings-10000.csv";
 
-				case "2":
 					System.out.print("Enter input text file path: ");
-					System.out.flush();
-					inputFile = scanner.nextLine();
-					break;
+					inputFile = scanner.nextLine().trim();
 
-				case "3":
-					System.out.print("Enter output file path: ");
-					System.out.flush();
-					outputFile = scanner.nextLine();
-					break;
+					System.out.print("Enter output file path (default: ./out.txt): ");
+					outputFile = scanner.nextLine().trim();
+					if (outputFile.isEmpty()) outputFile = "./out.txt";
 
-				case "4":
 					System.out.print("Choose mode (encode/decode): ");
-					System.out.flush();
 					mode = scanner.nextLine().trim().toLowerCase();
 					break;
 
-				case "5":
+				case "2":
+					System.out.println("\n[Current Configuration]");
+					System.out.println("Mapping File: " + mappingFile);
+					System.out.println("Input File: " + inputFile);
+					System.out.println("Output File: " + outputFile);
+					System.out.println("Mode: " + mode);
+					break;
+
+				case "3":
 					try {
+						if (!new File(mappingFile).exists()) throw new Exception("Mapping file doesn't exist");
+						if (!new File(inputFile).exists()) throw new Exception("Input file doesn't exist");
+
 						Mapper mapper = new Mapper();
 						mapper.load(mappingFile);
 						FileManager fm = new FileManager();
@@ -84,55 +94,27 @@ public class Runner {
 							fm.writeTextFile(outputFile, encodedLines);
 							System.out.println(ConsoleColour.GREEN + "[SUCCESS] File encoded to: " + outputFile);
 						} else if (mode.equals("decode")) {
-							System.out.println("[DEBUG] Decoding mode selected");
-							System.out.println("[DEBUG] Loading from file: " + inputFile);
-							System.out.println("[DEBUG] Writing decoded file to: " + outputFile);
-
 							List<String> encodedLines = fm.readTextFile(inputFile);
-							System.out.println("[DEBUG] Lines in encoded file: " + encodedLines.size());
-
 							Decoder decoder = new Decoder(mapper.getDecodingMap());
-
-							// first few lines of encoder
-							
-							System.out.println("First 3 lines from input:");
-							for (int i = 0; i < Math.min(3, encodedLines.size()); i++) {
-								System.out.println("line " + (i + 1) + ": " + encodedLines.get(i));
-							}
-
 							List<String> decodedLines = decoder.decodeFile(encodedLines);
-
-							// extra: show some of the output for sanity
-							System.out.println("[DEBUG] First 3 decoded lines:");
-							for (int i = 0; i < Math.min(3, decodedLines.size()); i++) {
-								System.out.println("DECODED " + (i + 1) + ": " + decodedLines.get(i));
-							}
-
 							fm.writeTextFile(outputFile, decodedLines);
 							System.out.println(ConsoleColour.GREEN + "[SUCCESS] File decoded to: " + outputFile);
-										
-							
-//							List<String> encodedLines = fm.readTextFile(inputFile);
-//							Decoder decoder = new Decoder(mapper.getDecodingMap());
-//							List<String> decodedLines = decoder.decodeFile(encodedLines);
-//							fm.writeTextFile(outputFile, decodedLines);
-//							System.out.println(ConsoleColour.GREEN + "[SUCCESS] File decoded to: " + outputFile);
 						} else {
 							System.out.println(ConsoleColour.RED + "[ERROR] You must choose to Encode or Decode");
 						}
 					} catch (Exception e) {
 						System.out.println(ConsoleColour.RED + "[ ERROR ] Something has failed: " + e.getMessage());
-						e.printStackTrace(); // show full error code
+						e.printStackTrace();
 					}
 					break;
 
-				case "6":
+				case "4":
 					running = false;
 					System.out.println("Exiting Program.");
 					break;
 
 				default:
-					System.out.println("INVALID, This operation chosen must be between 1-6");
+					System.out.println("INVALID, This operation chosen must be between 1-4");
 			}
 
 			System.out.println("\n\n");
@@ -147,8 +129,19 @@ public class Runner {
 	}
 
 	/**
-	 * just a visual progress bar for fun
-	 * doesn't really help but it looks cool in terminal
+	 * @Author John Healy
+	 * @version 1.0
+	 * @since java 1.0
+	 * 
+	 * The Print Progress public method is
+	 * just a visual progress bar for use in the terminal
+	 * it uses a string builder and a for loop to create a progress bar like 
+	 * animation in the terminal when run
+	 * 
+	 * If you run the program in the IDE ( eclipse in this case )
+	 * it does not show because it uses \r and that is not available
+	 * 
+	 * \r is a carriage return and overwrites the same place as it writes
 	 *
 	 * @param index current number
 	 * @param total how far we go
@@ -172,4 +165,4 @@ public class Runner {
 
 		if (done == total) System.out.println("\n");
 	}
-} 
+}
