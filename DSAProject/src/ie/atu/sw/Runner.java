@@ -94,6 +94,7 @@ public class Runner {
 						}
 					} catch (Exception e) {
 						System.out.println(ConsoleColour.RED + "[ ERROR ] Something has failed: " + e.getMessage());
+						e.printStackTrace(); // show full error code
 					}
 					break;
 

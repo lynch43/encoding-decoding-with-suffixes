@@ -12,11 +12,8 @@ import java.util.Map;
  * O(n) 
  */
 public class Decoder {
-	
-
 
 	private Map<Integer, String> decodingMap;
-	
 
 	/**
 	 * sets the decoding map we gonna use to turn codes into words
@@ -24,13 +21,12 @@ public class Decoder {
 	 */
 	public Decoder(Map<Integer, String> decodingMap) {
 		this.decodingMap = decodingMap;
-		
+
 		// [ TEST ] 
-		System.out.println("[TEST] Decoding map loaded: " +decodingMap.size() +
-		 "entries");
+		System.out.println("[TEST] Decoding map loaded: " + decodingMap.size() + " entries");
 		decodingMap.entrySet().stream().limit(10).forEach(entry ->
-		System.out.println(entry.getKey() + " => " + entry.getValue()));
-		 
+			System.out.println(entry.getKey() + " => " + entry.getValue())
+		);
 	}
 
 	/**
@@ -45,12 +41,16 @@ public class Decoder {
 	public String decodeLine(List<Integer> codes) {
 		StringBuilder result = new StringBuilder();
 
+		System.out.println("Checking Decoding line with codes: " + codes);
+
 		for (Integer code : codes) {
-			String word = decodingMap.getOrDefault(code, "[???]");
-			// TEST
-			if ("[???]".equals(word)) {
-				System.out.println("Code:" + code + "Not found?");
+			String word = decodingMap.get(code);
+
+			if (word == null) {
+				System.out.println("Code: " + code + " not found in decodingMap");
+				word = "[???]";
 			}
+
 			result.append(word).append(" ");
 		}
 
@@ -64,20 +64,29 @@ public class Decoder {
 	 * @param encodedLines lines from a file where each number is a code
 	 * @return decoded lines as readable sentences
 	 *
-	 * O(n) or m * n
+	 * O(n)
 	 */
 	public List<String> decodeFile(List<String> encodedLines) {
 		List<String> output = new java.util.ArrayList<>();
 
+		System.out.println("checking Decoding " + encodedLines.size() + " lines");
+		//TEST  check is the map is empty or not laoding
+		System.out.println("Decoding map available size: " + decodingMap.size());
+
+
 		for (String line : encodedLines) {
+			System.out.println("checking Raw line: '" + line + "'");
+
 			String[] parts = line.trim().split("\\s+");
 			List<Integer> codes = new java.util.ArrayList<>();
 
 			for (String part : parts) {
 				try {
-					codes.add(Integer.parseInt(part));
+					int parsed = Integer.parseInt(part);
+					codes.add(parsed);
 				} catch (NumberFormatException e) {
-					codes.add(0);
+					System.out.println("Error Couldn't parse: " + part);
+					codes.add(0); // still adds 0 so we can tes
 				}
 			}
 
@@ -86,6 +95,4 @@ public class Decoder {
 
 		return output;
 	}
-	
-	
-} 
+}

@@ -1,6 +1,7 @@
 package ie.atu.sw;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,10 @@ public class Encoder {
 	 */
 	public Encoder(Map<String, Integer> encodingMap) {
 		this.encodingMap = encodingMap;
+
+		// print first few keys to test
+		System.out.println("Sample encoding map keys:");
+		encodingMap.keySet().stream().limit(15).forEach(System.out::println);
 	}
 
 	/**
@@ -34,33 +39,39 @@ public class Encoder {
 	 * Big-O: O(n) where n = number of words in the line
 	 * each lookup in the map is O(1) so it scales with word count
 	 */
-	public List<Integer> encodeLine(String line) {   
+	public List<Integer> encodeLine(String line) {
 		List<Integer> codes = new ArrayList<>();
 		String[] words = line.toLowerCase().split("\\s+");
 
+		// these are the suffixes we will check if full word not in map
+		String[] suffixes = { "ing", "ed", "ly", "ion", "ment", "tion", "ness", "less", "able", "ous" };
+
 		for (String word : words) {
-			word = word.replaceAll("[^a-z@]", " ");
+			word = word.replaceAll("[^a-z]", ""); // clean up the word, just keep letters
+
 			if (encodingMap.containsKey(word)) {
+				System.out.println("Matched word: " + word);
 				codes.add(encodingMap.get(word));
 			} else {
-				boolean found = false;
-				String[] suffixes = { "ed", "ing", "tion", "able", "ion", "ment", "ness", "ous"};
-				
+				// check suffixes
+				boolean matched = false;
 				for (String suffix : suffixes) {
-					
 					if (word.endsWith(suffix)) {
 						String key = "@@" + suffix;
-						if(encodingMap.containsKey(key)) {
-							found = true;
+						if (encodingMap.containsKey(key)) {
+							System.out.println("Matched suffix: " + key + " for word: " + word);
+							codes.add(encodingMap.get(key));
+							matched = true;
 							break;
 						}
-						
 					}
-					
 				}
-				
+				if (!matched) {
+					System.out.println("Error Couldn't parse: " + word);
+					codes.add(0);
+				}
 			}
-		} 
+		}
 
 		return codes;
 	}
@@ -72,17 +83,20 @@ public class Encoder {
 	 * @param lines the full text file content, line by line
 	 * @return list of encoded lines as strings of numbers
 	 *
-	 * Big-O: O( n? ) I am not sure or is it quadratic? because it is lines * words in the line
-	 */
+	 * Big-O: O( n) 	 */
 	public List<String> encodeFile(List<String> lines) {
 		List<String> output = new ArrayList<>();
 
 		for (String line : lines) {
+			System.out.println("checking Raw line: '" + line + "'");
+
 			List<Integer> codes = encodeLine(line);
+			System.out.println("Checking Decoding line with codes: " + codes);
+
 			String encodedLine = codes.toString().replaceAll("[\\[\\],]", "").trim();
 			output.add(encodedLine);
 		}
 
 		return output;
 	}
-} 
+}

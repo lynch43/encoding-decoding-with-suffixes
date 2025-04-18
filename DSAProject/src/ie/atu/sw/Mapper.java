@@ -31,24 +31,25 @@ public class Mapper {
 		String line;
 
 		while ((line = reader.readLine()) != null) {
+			line = line.trim(); // fix empty lines in the csv
+
+			// skip blank or lines that are just incorrectly spaced
+			if (line.isEmpty() || !line.contains(",")) continue;
+
 			String[] parts = line.split(",");
-			
+
 			if (parts.length == 2) {
-				String key = parts[0].trim();
-				String valueS = parts[1].trim(); // integer or string?
-				try {
-					 Integer value = Integer.parseInt(valueS);
-					 encodingMap.put(key, value);
-					 decodingMap.put(value, key);
-				}
-				catch(Exception e){
-					System.out.println("Skipping invalid line" + line);
-				}
-				
+				String key = parts[0].toLowerCase().trim();
+				int value = Integer.parseInt(parts[1].trim()); // integer or string?
+
+				encodingMap.put(key, value);
+				decodingMap.put(value, key);
 			}
 		}
 
 		reader.close();
+		System.out.println("Encoding map size: " + encodingMap.size());
+		System.out.println("Decoding map size: " + encodingMap.size());
 		System.out.println("Encoding map has this many entries: " + encodingMap.size());
 		encodingMap.forEach((key, value) -> System.out.println(key + "--" + value));
 	}
@@ -74,4 +75,4 @@ public class Mapper {
 	public Map<Integer, String> getDecodingMap() {
 		return decodingMap;
 	}
-} 
+}
