@@ -1,7 +1,6 @@
 package ie.atu.sw;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +10,7 @@ import java.util.Map;
  * used when converting a full txt file before saving as .encoded
  * 
  * Big-O for encoding a line is O(n)
- * Big-O for a full file is O()
+ * Big-O for a full file is O(n * m) where n is the number of lines and m is the average number of words per line
  */
 public class Encoder {
 
@@ -83,7 +82,8 @@ public class Encoder {
 	 * @param lines the full text file content, line by line
 	 * @return list of encoded lines as strings of numbers
 	 *
-	 * Big-O: O( n) 	 */
+	 * Big-O: O(n * m) where n = number of lines and m = average number of words per line
+	 */
 	public List<String> encodeFile(List<String> lines) {
 		List<String> output = new ArrayList<>();
 
